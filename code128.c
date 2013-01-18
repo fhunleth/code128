@@ -121,8 +121,8 @@ static const int code128_pattern[] = {
 };
 
 const int code128_start_code_set_a = 103;
-const int code128_start_code_set_b = 103;
-const int code128_start_code_set_c = 103;
+const int code128_start_code_set_b = 104;
+const int code128_start_code_set_c = 105;
 const int code128_stop_pattern = 6379;
 
 static int code128a_ascii_to_code(char value)
@@ -135,7 +135,6 @@ static int code128a_ascii_to_code(char value)
         return -1;
 }
 
-#if 0
 static int code128b_ascii_to_code(char value)
 {
     if (value >= 32 && value <= 127)
@@ -143,7 +142,6 @@ static int code128b_ascii_to_code(char value)
     else
         return -1;
 }
-#endif
 
 size_t code128_len(const char *s)
 {
@@ -178,7 +176,7 @@ static int code128_append_stop_code(char *out)
     return CODE128_STOP_CODE_LEN;
 }
 
-size_t code128a_encode(const char *s, char *out, size_t maxlength)
+size_t code128_encode(const char *s, char *out, size_t maxlength, int startcode, int (*ascii_to_code)(char))
 {
     size_t len = code128_len(s);
 
@@ -191,18 +189,19 @@ size_t code128a_encode(const char *s, char *out, size_t maxlength)
     out += CODE128_QUIET_ZONE_LEN;
 
     // Start character
-    out += code128_append_code(code128_start_code_set_a, out);
-    int sum = code128_start_code_set_a;
+    out += code128_append_code(startcode, out);
+    int sum = startcode;
 
     // Encoded data
     int index = 1;
     while (*s) {
-        int code = code128a_ascii_to_code(*s);
+        int code = ascii_to_code(*s);
         if (code < 0)
             return 0;
         s++;
 
         sum += index * code;
+        index++;
         out += code128_append_code(code, out);
     }
     int checkdigit = sum % 103;
@@ -217,4 +216,14 @@ size_t code128a_encode(const char *s, char *out, size_t maxlength)
     memset(out, 0, CODE128_QUIET_ZONE_LEN);
 
     return len;
+}
+
+size_t code128a_encode(const char *s, char *out, size_t maxlength)
+{
+    return code128_encode(s, out, maxlength, code128_start_code_set_a, code128a_ascii_to_code);
+}
+
+size_t code128b_encode(const char *s, char *out, size_t maxlength)
+{
+    return code128_encode(s, out, maxlength, code128_start_code_set_b, code128b_ascii_to_code);
 }
