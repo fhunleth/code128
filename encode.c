@@ -26,7 +26,6 @@ static const char *bits_to_barspace(const char *encoding, int count, int *barspa
 	c = 0;
 	count--;
     }
-    printf("barspace = %d\n", bs);
     *barspace = bs;
     return encoding;
 }
@@ -61,50 +60,81 @@ static int code128a_to_barspace(char value)
 	case '8': return 311222;
 	case '9': return 321122;
 	case ':': return 321221;
-	case ';': return 321212;
+    case ';': return 312212;
 	case '<': return 322112;
 	case '=': return 322211;
 	case '>': return 212123;
 	case '?': return 212321;
 	case '@': return 232121;
 	case 'A': return 111323;
-	case 'B': return 212222;//
-	case 'C': return 212222;
-	case 'D': return 212222;
-	case 'E': return 212222;
-	case 'F': return 212222;
-	case 'G': return 212222;
-	case 'H': return 212222;
-	case 'I': return 212222;
-	case 'J': return 212222;
-	case 'K': return 212222;
-	case 'L': return 212222;
-	case 'M': return 212222;
-	case 'N': return 212222;
-	case 'O': return 212222;
-	case 'P': return 212222;
-	case 'Q': return 212222;
-	case 'R': return 212222;
-	case 'S': return 212222;
-	case 'T': return 212222;
-	case 'U': return 212222;
-	case 'V': return 212222;
-	case 'W': return 212222;
-	case 'X': return 212222;
-	case 'Y': return 212222;
-	case 'Z': return 212222;
-	case '[': return 212222;
-	case '\\': return 212222;
-	case ']': return 212222;
-	case '^': return 212222;
-	case '_': return 212222;
-	default: return 0;
+    case 'B': return 131123;
+    case 'C': return 131321;
+    case 'D': return 112313;
+    case 'E': return 132113;
+    case 'F': return 132311;
+    case 'G': return 211313;
+    case 'H': return 231113;
+    case 'I': return 231311;
+    case 'J': return 112133;
+    case 'K': return 112331;
+    case 'L': return 132131;
+    case 'M': return 113123;
+    case 'N': return 113321;
+    case 'O': return 133121;
+    case 'P': return 313121;
+    case 'Q': return 211331;
+    case 'R': return 231131;
+    case 'S': return 213113;
+    case 'T': return 213311;
+    case 'U': return 213131;
+    case 'V': return 311123;
+    case 'W': return 311321;
+    case 'X': return 331121;
+    case 'Y': return 312113;
+    case 'Z': return 312311;
+    case '[': return 332111;
+    case '\\': return 314111;
+    case ']': return 221411;
+    case '^': return 431111;
+    case '_': return 111224;
+    //case 0: return 111422; /* Currently null characters aren't supported */
+    case 1: return 121124;
+    case 2: return 121421;
+    case 3: return 141122;
+    case 4: return 141221;
+    case 5: return 112214;
+    case 6: return 112412;
+    case 7: return 122114;
+    case 8: return 122411;
+    case 9: return 142112;
+    case 10: return 142211;
+    case 11: return 241211;
+    case 12: return 221114;
+    case 13: return 413111;
+    case 14: return 241112;
+    case 15: return 134111;
+    case 16: return 111242;
+    case 17: return 121142;
+    case 18: return 121241;
+    case 19: return 114212;
+    case 20: return 124112;
+    case 21: return 124211;
+    case 22: return 411212;
+    case 23: return 421112;
+    case 24: return 421211;
+    case 25: return 212141;
+    case 26: return 214121;
+    case 27: return 412121;
+    case 28: return 111143;
+    case 29: return 111341;
+    case 30: return 131141;
+    case 31: return 114113;
+    default: return 0;
 	}
 }
 
 static void test_one_code128a_point(char value)
 {
-    printf("value = '%c'\n", value);
 	char input[2];
 	input[0] = value;
 	input[1] = 0;
@@ -133,7 +163,9 @@ static void test_one_code128a_point(char value)
 void test_encode__all_code128a_points(void)
 {
 	char c;
-	for (c = ' '; c <= '9'; c++)
-		test_one_code128a_point(c);
+    for (c = 0; c < 127; c++) {
+        if (code128a_to_barspace(c) != 0)
+            test_one_code128a_point(c);
+    }
 }
 
