@@ -1,4 +1,4 @@
-// Copyright (c) 2013, LKC Technologies, Inc.
+// Copyright (c) 2013-15, LKC Technologies, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,16 @@
 extern "C" {
 #endif
 
-size_t code128_len(const char *s);
-size_t code128a_encode(const char *s, char *out, size_t maxlength);
-size_t code128b_encode(const char *s, char *out, size_t maxlength);
+// Since the FNCn characters are not ASCII, define versions here to
+// simplify encoding strings that include them.
+#define CODE128_FNC1 '\xf1'
+#define CODE128_FNC2 '\xf2'
+#define CODE128_FNC3 '\xf3'
+#define CODE128_FNC4 '\xf4'
+
+size_t code128_estimate_len(const char *s);
+size_t code128_encode_gs1(const char *s, char *out, size_t maxlength);
+size_t code128_encode_raw(const char *s, char *out, size_t maxlength);
 
 #ifdef __cplusplus
 }
