@@ -424,11 +424,11 @@ static void code128_do_step(struct code128_state *state)
         // If we're leaving mode C, though, try both in case one ends up
         // better than the other.
         if (code128_do_a_step(state->steps, state->current_ix, state->todo_ix)) {
+            state->todo_ix++;
             code128_alloc_step(state);
         }
-        if (code128_do_b_step(state->steps, state->current_ix, state->todo_ix)) {
-            code128_alloc_step(state);
-        }
+        if (code128_do_b_step(state->steps, state->current_ix, state->todo_ix))
+            state->todo_ix++;
     }
 }
 
