@@ -28,7 +28,7 @@ Once you get `barcode_data`, each byte corresponds to whether a vertical
 line should be drawn. If the byte is 0xff, then draw a line. If the byte is
 0x00, then don't.
 
-## Compiling
+## Compiling and testing
 
 The main library, `code128.[ch]`, doesn't have any dependencies. The test
 program depends on `libpng`, so make sure to install that first. On
@@ -48,6 +48,12 @@ The regression tests require [zbar](http://zbar.sourceforge.net/). Install
 sudo apt install zbar-tools
 ```
 
+Or on OSX:
+
+```sh
+brew install zbar
+```
+
 Then run `make check`.
 
 ## Integrating
@@ -55,4 +61,3 @@ Then run `make check`.
 If you're using C or C++, the easiest way of integrating this code into your
 program is to just copy code128.[ch] to your tree. If you're not using C,
 then calling `code128png` from your app may be an option as well.
-
