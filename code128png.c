@@ -23,8 +23,10 @@
 #include <stdio.h>
 #include <err.h>
 #include <stdlib.h>
+#include <string.h> // needed for memset()
 
 #include <libpng/png.h>
+//#include <png.h> // MacOS 'brew search zbar' installs /usr/local/include/png.h
 
 #include "code128.h"
 

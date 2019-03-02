@@ -157,7 +157,7 @@ struct code128_step
     const char *next_input;     // Remaining input
     unsigned short len;         // The length of the pattern so far (includes this step)
     char mode;                  // State for the current encoding
-    char code;                  // What code should be written for this step
+    signed char code;           // What code should be written for this step
 };
 
 struct code128_state {
@@ -186,8 +186,10 @@ static void code128_append_pattern(int pattern, int pattern_length, char *out)
     assert(pattern & (1 << (pattern_length - 1)));
 
     int i;
-    for (i = pattern_length - 1; i >= 0; i--)
-        *out++ = (pattern & (1 << i)) ? 255 : 0;
+    for (i = pattern_length - 1; i >= 0; i--) {
+        // cast avoids warning: implicit conversion from 'int' to 'char' changes value from 255 to -1 [-Wconstant-conversion]
+        *out++ = (unsigned char)((pattern & (1 << i)) ? 255 : 0);
+    }
 }
 
 static int code128_append_code(int code, char *out)
@@ -203,7 +205,7 @@ static int code128_append_stop_code(char *out)
     return CODE128_STOP_CODE_LEN;
 }
 
-static char code128_switch_code(char from_mode, char to_mode)
+static signed char code128_switch_code(char from_mode, char to_mode)
 {
     switch (from_mode) {
     case CODE128_MODE_A:
@@ -235,7 +237,7 @@ static char code128_switch_code(char from_mode, char to_mode)
     return -1;
 }
 
-static char code128a_ascii_to_code(char value)
+static signed char code128a_ascii_to_code(char value)
 {
     if (value >= ' ' && value <= '_')
         return value - ' ';
@@ -253,7 +255,7 @@ static char code128a_ascii_to_code(char value)
         return -1;
 }
 
-static char code128b_ascii_to_code(char value)
+static signed char code128b_ascii_to_code(char value)
 {
     if (value >= 32) // value <= 127 is implied
         return value - 32;
@@ -269,7 +271,7 @@ static char code128b_ascii_to_code(char value)
         return -1;
 }
 
-static char code128c_ascii_to_code(const char *values)
+static signed char code128c_ascii_to_code(const char *values)
 {
     if (values[0] == CODE128_FNC1)
         return 102;
