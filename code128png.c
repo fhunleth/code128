@@ -24,7 +24,7 @@
 #include <err.h>
 #include <stdlib.h>
 
-#include <libpng/png.h>
+#include <png.h>
 
 #include "code128.h"
 
