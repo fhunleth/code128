@@ -12,4 +12,7 @@ clean:
 format-code:
 	astyle *.c *.h
 
-.PHONY: clean format-code all
+check test:
+	./test.sh
+
+.PHONY: clean format-code all check test

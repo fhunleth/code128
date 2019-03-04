@@ -30,15 +30,29 @@ line should be drawn. If the byte is 0xff, then draw a line. If the byte is
 
 ## Compiling
 
-To build on Linux, just run `make`. The result is a test program that creates
-`png` files of barcode data passed on the commandline.
+The main library, `code128.[ch]`, doesn't have any dependencies. The test
+program depends on `libpng`, so make sure to install that first. On
+Debian/Ubuntu, run:
 
-To verify that nothing went wrong, run `./test.sh` to try encoding barcodes
-and decoding them with a 3rd party tool. You'll need to install zbar-tools.
+```sh
+sudo apt install libpng-dev
+```
+
+Then run `make`. The result is a test program that creates `png` files of
+barcode data passed on the commandline.
+
+The regression tests require [zbar](http://zbar.sourceforge.net/). Install
+`zbar` on Debian/Ubuntu by:
+
+```sh
+sudo apt install zbar-tools
+```
+
+Then run `make check`.
 
 ## Integrating
 
 If you're using C or C++, the easiest way of integrating this code into your
 program is to just copy code128.[ch] to your tree. If you're not using C,
-then calling `code128png` from your app may not be too difficult.
+then calling `code128png` from your app may be an option as well.
 
