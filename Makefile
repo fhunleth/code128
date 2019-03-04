@@ -12,7 +12,7 @@ clean:
 format-code:
 	astyle *.c *.h
 
-check test:
+check test: code128png
 	./test.sh
 
 .PHONY: clean format-code all check test
