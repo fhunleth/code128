@@ -1,0 +1,16 @@
+# Build target and execute test cases
+script:
+ - mc _ make
+ - mc _ make check test
+ - mc _ make format-code
+
+# Install all required dependencies
+install:
+ - npm install -g mini-cross
+ - mc _ make clean
+
+language: node_js
+
+services:
+ - docker
+

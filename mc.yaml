@@ -1,0 +1,11 @@
+---
+base: ubuntu:18.04
+install:
+ - gcc
+ - libpng-dev
+ - make
+
+ # Optional dependencies
+ - astyle
+ - zbar-tools
+---
