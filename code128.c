@@ -483,8 +483,10 @@ size_t code128_encode_raw(const char *s, char *out, size_t maxlength)
     } while (state.current_ix != state.todo_ix);
 
     // If no best_step, then fail.
-    if (state.best_ix < 0)
+    if (state.best_ix < 0) {
+        free(state.steps);
         return 0;
+    }
 
     // Determine the list of codes
     size_t num_codes = state.maxlength / CODE128_CHAR_LEN;
