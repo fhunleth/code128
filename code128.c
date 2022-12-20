@@ -40,7 +40,7 @@
 #define CODE128_MIN_ENCODE_LEN (CODE128_QUIET_ZONE_LEN * 2 + CODE128_CHAR_LEN * 2 + CODE128_STOP_CODE_LEN)
 
 static const int code128_pattern[] = {
-        // value: pattern,     bar/space widths
+    // value: pattern,     bar/space widths
     1740, //   0: 11011001100, 212222
     1644, //   1: 11001101100, 222122
     1638, //   2: 11001100110, 222221

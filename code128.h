@@ -28,21 +28,21 @@
 // credits to https://www.transmissionzero.co.uk/computing/building-dlls-with-mingw/
 #ifdef _WIN32
 
-  /* You should define ADD_EXPORTS *only* when building the DLL. */
-  #ifdef ADD_EXPORTS
-    #define ADDAPI __declspec(dllexport)
-  #else
-    #define ADDAPI __declspec(dllimport)
-  #endif
+/* You should define ADD_EXPORTS *only* when building the DLL. */
+#ifdef ADD_EXPORTS
+#define ADDAPI __declspec(dllexport)
+#else
+#define ADDAPI __declspec(dllimport)
+#endif
 
-  /* Define calling convention in one place, for convenience. */
-  #define ADDCALL __cdecl
+/* Define calling convention in one place, for convenience. */
+#define ADDCALL __cdecl
 
 #else /* _WIN32 not defined. */
 
-  /* Define with no value on non-Windows OSes. */
-  #define ADDAPI
-  #define ADDCALL
+/* Define with no value on non-Windows OSes. */
+#define ADDAPI
+#define ADDCALL
 
 #endif
 
