@@ -21,13 +21,31 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
-#include <err.h>
 #include <stdlib.h>
 #include <string.h> // needed for memset()
-
 #include <png.h>
 
 #include "code128.h"
+
+#ifndef _WIN32
+// Windows does not support err.h
+#include <err.h>
+#else
+
+// Mimic behavior
+void
+errx(int eval, const char *fmt, ...)
+{
+    fprintf(stderr, fmt, strerror(errno));
+    exit(eval);
+}
+
+void
+warnx(const char *fmt, ...)
+{
+    fprintf(stderr, fmt, strerror(errno));
+}
+#endif
 
 static void png_error_callback(png_structp png_ptr, const char *msg)
 {
@@ -61,7 +79,7 @@ int main(int argc, char *argv[])
 
     FILE *fp = fopen(argv[1], "wb");
     if (!fp)
-        err(EXIT_FAILURE, "can't open output");
+        errx(EXIT_FAILURE, "can't open output");
 
     png_structp png_ptr = png_create_write_struct
                           (PNG_LIBPNG_VER_STRING, NULL,
