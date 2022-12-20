@@ -170,7 +170,7 @@ struct code128_state {
     size_t maxlength;
 };
 
-size_t code128_estimate_len(const char *s)
+size_t ADDCALL code128_estimate_len(const char *s)
 {
     return CODE128_QUIET_ZONE_LEN
            + CODE128_CHAR_LEN // start code
@@ -434,7 +434,7 @@ static void code128_do_step(struct code128_state *state)
     }
 }
 
-size_t code128_encode_raw(const char *s, char *out, size_t maxlength)
+size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength)
 {
     struct code128_state state;
 
@@ -533,7 +533,7 @@ size_t code128_encode_raw(const char *s, char *out, size_t maxlength)
  *
  * @return the length of barcode data in bytes
  */
-size_t code128_encode_gs1(const char *s, char *out, size_t maxlength)
+size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength)
 {
     char raw[strlen(s) + 1];
 

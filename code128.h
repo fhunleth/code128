@@ -25,6 +25,28 @@
 
 #include <stddef.h>
 
+// credits to https://www.transmissionzero.co.uk/computing/building-dlls-with-mingw/
+#ifdef _WIN32
+
+  /* You should define ADD_EXPORTS *only* when building the DLL. */
+  #ifdef ADD_EXPORTS
+    #define ADDAPI __declspec(dllexport)
+  #else
+    #define ADDAPI __declspec(dllimport)
+  #endif
+
+  /* Define calling convention in one place, for convenience. */
+  #define ADDCALL __cdecl
+
+#else /* _WIN32 not defined. */
+
+  /* Define with no value on non-Windows OSes. */
+  #define ADDAPI
+  #define ADDCALL
+
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,9 +58,9 @@ extern "C" {
 #define CODE128_FNC3 '\xf3'
 #define CODE128_FNC4 '\xf4'
 
-size_t code128_estimate_len(const char *s);
-size_t code128_encode_gs1(const char *s, char *out, size_t maxlength);
-size_t code128_encode_raw(const char *s, char *out, size_t maxlength);
+ADDAPI size_t ADDCALL code128_estimate_len(const char *s);
+ADDAPI size_t ADDCALL code128_encode_gs1(const char *s, char *out, size_t maxlength);
+ADDAPI size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength);
 
 #ifdef __cplusplus
 }
