@@ -1,0 +1,68 @@
+# This Makefile will build a DLL and an application which makes use of the DLL.
+
+DLL_NAME := code128
+EXE_NAME := code128png
+
+# Object files to create for the executable
+DLL_OBJS = $(DLL_NAME).o
+EXE_OBJS = $(EXE_NAME).o
+
+# Warnings to be raised by the C compiler
+WARNS = -Wall -fpic -Wextra -march=$(ARCH)
+
+
+CODE128PNG_INCLUDE_DIRS := .
+CODE128PNG_LIBRARY_DIRS := .
+CODE128PNG_LIBRARIES := png ${DLL_NAME}
+
+EXE_CFLAGS += $(foreach includedir,$(CODE128PNG_INCLUDE_DIRS),-I$(includedir))
+EXE_LDFLAGS += $(foreach librarydir,$(CODE128PNG_LIBRARY_DIRS),-L$(librarydir))
+EXE_LDFLAGS += $(foreach library,$(CODE128PNG_LIBRARIES),-l$(library))
+
+
+
+# Names of tools to use when building
+CC = cc
+DLL = lib$(DLL_NAME)-$(ARCH).dll
+EXE = $(EXE_NAME)-$(ARCH).exe
+
+# Compiler flags
+EXE_CFLAGS += -O2 -std=c99 ${WARNS}
+DLL_CFLAGS += ${EXE_CFLAGS} -D ADD_EXPORTS
+
+#ifeq ($(OS), Windows_NT)
+#DLL_CFLAGS += -D WINDOWS
+#endif
+
+# Linker flags
+DLL_LDFLAGS += -shared -s -Wl,--subsystem,windows,--out-implib,lib$(DLL_NAME).a
+EXE_LDFLAGS += -s -Wl,--subsystem,console
+
+
+default: ${DLL} ${EXE}
+
+# Delete all build output
+clean:
+	if exist *.dll del /q *.dll
+	if exist *.o del /q *.o
+	if exist *.a del /q *.a
+	if exist *.exe del /q *.exe
+
+
+# Compile object files for DLL
+$(DLL_NAME).o: $(DLL_NAME).c $(DLL_NAME).h
+	${CC} ${DLL_CFLAGS} -c "$<" -o "$@"
+
+# Build the DLL
+${DLL}: ${DLL_OBJS}
+	${CC} -o "$@" ${DLL_OBJS} ${DLL_LDFLAGS}
+
+# Buld the executable
+${EXE}: ${EXE_OBJS}
+	${CC} ${EXE_CFLAGS} -o "$@" ${EXE_OBJS} ${EXE_LDFLAGS}
+
+.PHONY: clean default
+
+all:
+	$(MAKE) ARCH=x86-64 default
+	$(MAKE) ARCH=x86-64-v4 default
