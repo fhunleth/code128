@@ -38,8 +38,27 @@ Debian/Ubuntu, run:
 sudo apt install libpng-dev
 ```
 
+On Windows, with MSYS2, run:
+```sh
+pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+pacman -S mingw-w64-x86_64-libpng
+```
+
+Details on how to install and setup MSYS2 environment on Windows can be found
+[here](https://code.visualstudio.com/docs/languages/cpp) and
+[here](https://www.freecodecamp.org/news/how-to-install-c-and-cpp-compiler-on-windows/) .
+
+
 Then run `make`. The result is a test program that creates `png` files of
 barcode data passed on the commandline.
+
+On Windows, to build the libraries and the test program for different architectures,
+you should open Powershell and run:
+
+```sh
+mingw-32-make.exe all
+```
+
 
 The regression tests require [zbar](http://zbar.sourceforge.net/). Install
 `zbar` on Debian/Ubuntu by:
