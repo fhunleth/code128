@@ -1,0 +1,32 @@
+name: CI
+
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron:  '0 0 15 * *'
+
+
+jobs:
+  ci:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Clean
+        run: npx --package mini-cross@0.15.2 mc --no-tty _ make clean
+
+      - name: Build
+        run: npx --package mini-cross@0.15.2 mc --no-tty _ make
+
+      - name: Test
+        run: npx --package mini-cross@0.15.2 mc --no-tty _ make check test
+
+      - name: Format Code
+        run: npx --package mini-cross@0.15.2 mc --no-tty _ make format-code
+
