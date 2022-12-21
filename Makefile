@@ -1,4 +1,5 @@
-CFLAGS ?= -O2 -Wall -Wextra
+# -Wno-implicit-fallthrough - the implicit fallthrough is intended so turn off warning
+CFLAGS ?= -O2 -Wall -Wextra -Wno-implicit-fallthrough
 
 MAJOR := 1
 MINOR := 0
@@ -11,7 +12,7 @@ LIBSOV = $(LIBSO).$(VERSION)
 LIBA   = lib$(NAME).a
 
 
-CODE128PNG_INCLUDE_DIRS := 
+CODE128PNG_INCLUDE_DIRS :=
 CODE128PNG_LIBRARY_DIRS :=
 CODE128PNG_LIBRARIES := png
 
