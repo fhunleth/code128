@@ -40,7 +40,7 @@ clean:
 	$(RM) -f code128png *.o *.so* *.a
 
 format-code:
-	astyle *.c *.h
+	astyle --indent-preproc-block *.c *.h
 
 check test: code128png
 	./test.sh
