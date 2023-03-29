@@ -296,8 +296,9 @@ static int code128_do_a_step(struct code128_step *base, int prev_ix, int ix)
         return 0;
 
     step->code = code128a_ascii_to_code(value);
-    if (step->code < 0)
+    if (step->code < 0) {
         return 0;
+    }
 
     step->prev_ix = prev_ix;
     step->next_input = previous_step->next_input + 1;
@@ -320,8 +321,9 @@ static int code128_do_b_step(struct code128_step *base, int prev_ix, int ix)
         return 0;
 
     step->code = code128b_ascii_to_code(value);
-    if (step->code < 0)
+    if (step->code < 0) {
         return 0;
+    }
 
     step->prev_ix = prev_ix;
     step->next_input = previous_step->next_input + 1;
@@ -344,8 +346,9 @@ static int code128_do_c_step(struct code128_step *base, int prev_ix, int ix)
         return 0;
 
     step->code = code128c_ascii_to_code(previous_step->next_input);
-    if (step->code < 0)
+    if (step->code < 0) {
         return 0;
+   }
 
     step->prev_ix = prev_ix;
     step->next_input = previous_step->next_input + 1;
@@ -380,8 +383,9 @@ static void code128_do_step(struct code128_state *state)
     struct code128_step *step = &state->steps[state->current_ix];
     if (*step->next_input == 0) {
         // Done, so see if we have a new shortest encoding.
-        if ((step->len < state->maxlength) ||
-                (state->best_ix < 0 && step->len == state->maxlength)) {
+        // Fix for some FNC3 starting codes
+        if ((step->len - CODE128_CHAR_LEN < state->maxlength) ||
+                (state->best_ix < 0 && step->len - CODE128_CHAR_LEN == state->maxlength)) {
             state->best_ix = state->current_ix;
 
             // Update maxlength to avoid considering anything longer
@@ -483,7 +487,8 @@ size_t ADDCALL code128_encode_raw(const char *s, char *out, size_t maxlength)
     } while (state.current_ix != state.todo_ix);
 
     // If no best_step, then fail.
-    if (state.best_ix < 0) {
+    if (state.best_ix < 0)
+    {
         free(state.steps);
         return 0;
     }
