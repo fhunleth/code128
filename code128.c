@@ -384,8 +384,9 @@ static void code128_do_step(struct code128_state *state)
     if (*step->next_input == 0) {
         // Done, so see if we have a new shortest encoding.
         // Fix for some FNC3 starting codes
-        if ((step->len - CODE128_CHAR_LEN < state->maxlength) ||
-                (state->best_ix < 0 && step->len - CODE128_CHAR_LEN == state->maxlength)) {
+        size_t step_len = step->len - CODE128_CHAR_LEN;
+        if ((step_len < state->maxlength) ||
+                (state->best_ix < 0 && step_len == state->maxlength)) {
             state->best_ix = state->current_ix;
 
             // Update maxlength to avoid considering anything longer
