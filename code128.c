@@ -260,7 +260,8 @@ static signed char code128a_ascii_to_code(char value)
 
 static signed char code128b_ascii_to_code(char value)
 {
-    if (value >= 32) // value <= 127 is implied
+    /* value <= 127 is required to work both on x86 and on ARM. */
+    if ((value >= 32) && (value <= 127))
         return value - 32;
     else if (value == CODE128_FNC1)
         return 102;
