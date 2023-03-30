@@ -244,7 +244,7 @@ static signed char code128a_ascii_to_code(char value)
 {
     if (value >= ' ' && value <= '_')
         return value - ' ';
-    else if (value < ' ')
+    else if (value >= 0 && value < ' ')
         return value + 64;
     else if (value == CODE128_FNC1)
         return 102;
@@ -352,7 +352,7 @@ static int code128_do_c_step(struct code128_step *base, int prev_ix, int ix)
     step->code = code128c_ascii_to_code(previous_step->next_input);
     if (step->code < 0) {
         return 0;
-   }
+    }
 
     step->prev_ix = prev_ix;
     step->next_input = previous_step->next_input + 1;
