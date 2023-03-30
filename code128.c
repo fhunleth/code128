@@ -215,6 +215,7 @@ static signed char code128_switch_code(char from_mode, char to_mode)
         case CODE128_MODE_C:
             return 99;
         }
+        break;
 
     case CODE128_MODE_B:
         switch (to_mode) {
@@ -223,6 +224,7 @@ static signed char code128_switch_code(char from_mode, char to_mode)
         case CODE128_MODE_C:
             return 99;
         }
+        break;
 
     case CODE128_MODE_C:
         switch (to_mode) {
@@ -231,6 +233,7 @@ static signed char code128_switch_code(char from_mode, char to_mode)
         case CODE128_MODE_A:
             return 101;
         }
+        break;
     }
 
     assert(0); // Invalid mode switch
