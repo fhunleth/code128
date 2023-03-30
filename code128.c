@@ -244,7 +244,7 @@ static signed char code128a_ascii_to_code(char value)
 {
     if (value >= ' ' && value <= '_')
         return value - ' ';
-    else if (value >= 0 && value < ' ')
+    else if (value < ' ')
         return value + 64;
     else if (value == CODE128_FNC1)
         return 102;
