@@ -1,5 +1,8 @@
 # This Makefile will build a DLL and an application which makes use of the DLL.
 
+MAJOR := 1
+MINOR := 1
+VERSION := $(MAJOR).$(MINOR)
 DLL_NAME := code128
 EXE_NAME := code128png
 
@@ -23,7 +26,7 @@ EXE_LDFLAGS += $(foreach library,$(CODE128PNG_LIBRARIES),-l$(library))
 
 # Names of tools to use when building
 CC = cc
-DLL = lib$(DLL_NAME)-$(ARCH).dll
+DLL = lib$(DLL_NAME)_v$(VERSION)-$(ARCH).dll
 EXE = $(EXE_NAME)-$(ARCH).exe
 
 # Compiler flags
@@ -57,7 +60,7 @@ $(DLL_NAME).o: $(DLL_NAME).c $(DLL_NAME).h
 ${DLL}: ${DLL_OBJS}
 	${CC} -o "$@" ${DLL_OBJS} ${DLL_LDFLAGS}
 
-# Buld the executable
+# Build the executable
 ${EXE}: ${EXE_OBJS}
 	${CC} ${EXE_CFLAGS} -o "$@" ${EXE_OBJS} ${EXE_LDFLAGS}
 

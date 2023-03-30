@@ -2,7 +2,7 @@
 CFLAGS ?= -O2 -Wall -Wextra -Wno-implicit-fallthrough
 
 MAJOR := 1
-MINOR := 0
+MINOR := 1
 NAME := code128
 VERSION := $(MAJOR).$(MINOR)
 
